@@ -1,6 +1,7 @@
 package main
 
-import ()
+import "heatcold/cmd"
 
 func main() {
+	cmd.Execute()
 }
