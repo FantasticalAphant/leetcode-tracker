@@ -115,3 +115,14 @@ func (ps *ProblemStore) UpdateProblem(number string) error {
 
 	return ps.Save()
 }
+
+func (ps *ProblemStore) RemoveProblem(number string) error {
+	id, err := strconv.Atoi(number)
+
+	if err != nil {
+		return err
+	}
+
+	delete(ps.Problems, id)
+	return ps.Save()
+}
