@@ -2,6 +2,7 @@ package store
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -99,6 +100,10 @@ func (ps *ProblemStore) AddProblem(number string) error {
 		Completed: true,
 	}
 
+	if _, ok := ps.Problems[id]; ok {
+		return errors.New("problem already exists")
+	}
+
 	ps.Problems[id] = problem
 	return ps.Save()
 }
@@ -108,6 +113,10 @@ func (ps *ProblemStore) UpdateProblem(number string) error {
 
 	if err != nil {
 		return err
+	}
+
+	if _, ok := ps.Problems[id]; !ok {
+		return errors.New("problem not found")
 	}
 
 	ps.Problems[id].Completed = !ps.Problems[id].Completed
@@ -121,6 +130,10 @@ func (ps *ProblemStore) RemoveProblem(number string) error {
 
 	if err != nil {
 		return err
+	}
+
+	if _, ok := ps.Problems[id]; !ok {
+		return errors.New("problem not found")
 	}
 
 	delete(ps.Problems, id)
