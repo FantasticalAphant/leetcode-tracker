@@ -88,23 +88,28 @@ func (ps *ProblemStore) Save() error {
 }
 
 // AddProblem adds a new LeetCode problem on to the existing list
-func (ps *ProblemStore) AddProblem(number string) error {
-	id, err := strconv.Atoi(number)
-	if err != nil {
-		return err
+func (ps *ProblemStore) AddProblem(numbers []string) error {
+	for _, number := range numbers {
+		id, err := strconv.Atoi(number)
+		if err != nil {
+			return err
+		}
+
+		problem := &Problem{
+			ID:        id,
+			Modified:  time.Now(),
+			Completed: true,
+		}
+
+		// TODO: use custom errors (i.e., not all unique error or smth like that)
+		// allow user to add the questions not in the list
+		if _, ok := ps.Problems[id]; ok {
+			return errors.New("problem already exists")
+		}
+
+		ps.Problems[id] = problem
 	}
 
-	problem := &Problem{
-		ID:        id,
-		Modified:  time.Now(),
-		Completed: true,
-	}
-
-	if _, ok := ps.Problems[id]; ok {
-		return errors.New("problem already exists")
-	}
-
-	ps.Problems[id] = problem
 	return ps.Save()
 }
 
