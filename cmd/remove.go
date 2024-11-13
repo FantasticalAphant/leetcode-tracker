@@ -13,9 +13,9 @@ func init() {
 var removeCmd = &cobra.Command{
 	Use:   "remove",
 	Short: "Remove a leetcode problem from the list",
-	Args:  cobra.ExactArgs(1),
+	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if err := problemStore.RemoveProblem(args[0]); err != nil {
+		if err := problemStore.RemoveProblem(args); err != nil {
 			return err
 		}
 		fmt.Println("Problem successfully deleted")

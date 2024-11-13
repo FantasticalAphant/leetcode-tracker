@@ -130,17 +130,21 @@ func (ps *ProblemStore) UpdateProblem(number string) error {
 	return ps.Save()
 }
 
-func (ps *ProblemStore) RemoveProblem(number string) error {
-	id, err := strconv.Atoi(number)
+func (ps *ProblemStore) RemoveProblem(numbers []string) error {
+	for _, number := range numbers {
 
-	if err != nil {
-		return err
+		id, err := strconv.Atoi(number)
+
+		if err != nil {
+			return err
+		}
+
+		if _, ok := ps.Problems[id]; !ok {
+			return errors.New("problem not found")
+		}
+
+		delete(ps.Problems, id)
 	}
 
-	if _, ok := ps.Problems[id]; !ok {
-		return errors.New("problem not found")
-	}
-
-	delete(ps.Problems, id)
 	return ps.Save()
 }
