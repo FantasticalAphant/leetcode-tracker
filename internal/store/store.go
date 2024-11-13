@@ -88,7 +88,7 @@ func (ps *ProblemStore) Save() error {
 }
 
 // AddProblem adds a new LeetCode problem on to the existing list
-func (ps *ProblemStore) AddProblem(numbers []string) error {
+func (ps *ProblemStore) AddProblem(completed bool, numbers []string) error {
 	for _, number := range numbers {
 		id, err := strconv.Atoi(number)
 		if err != nil {
@@ -98,7 +98,7 @@ func (ps *ProblemStore) AddProblem(numbers []string) error {
 		problem := &Problem{
 			ID:        id,
 			Modified:  time.Now(),
-			Completed: true,
+			Completed: completed,
 		}
 
 		// TODO: use custom errors (i.e., not all unique error or smth like that)
