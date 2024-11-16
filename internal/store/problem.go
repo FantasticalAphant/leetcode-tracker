@@ -8,4 +8,5 @@ type Problem struct {
 	ID        int       `json:"id"`
 	Modified  time.Time `json:"modified"`
 	Completed bool      `json:"completed"`
+	Notes     string    `json:"notes"`
 }

@@ -148,3 +148,23 @@ func (ps *ProblemStore) RemoveProblem(numbers []string) error {
 
 	return ps.Save()
 }
+
+func (ps *ProblemStore) AddNote(text, number string) error {
+	id, err := strconv.Atoi(number)
+	if err != nil {
+		return err
+	}
+
+	ps.Problems[id].Notes = text
+
+	return ps.Save()
+}
+
+func (ps *ProblemStore) ShowNotes(number string) (string, error) {
+	id, err := strconv.Atoi(number)
+	if err != nil {
+		return "", err
+	}
+
+	return ps.Problems[id].Notes, nil
+}
