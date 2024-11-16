@@ -8,6 +8,7 @@ import (
 
 const leetcodeAPI = "https://leetcode.com/api/problems/all/"
 
+// TODO: also get the difficulty (tags if possible as well)
 type Response struct {
 	StatStatusPairs []struct {
 		Stat struct {

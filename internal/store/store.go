@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -155,7 +156,7 @@ func (ps *ProblemStore) AddNote(text, number string) error {
 		return err
 	}
 
-	ps.Problems[id].Notes = text
+	ps.Problems[id].Notes = strings.TrimSpace(text)
 
 	return ps.Save()
 }
