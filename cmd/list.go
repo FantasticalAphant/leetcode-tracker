@@ -30,9 +30,9 @@ var listCmd = &cobra.Command{
 			if problem.Completed {
 				status = "✓"
 			}
-			fmt.Printf("[%s] %d", status, problem.ID)
+			fmt.Printf("[%s] %-4d", status, problem.ID)
 			if long {
-				fmt.Printf(" (Updated): %v\tNotes: %v", problem.Modified, problem.Notes)
+				fmt.Printf(" | Updated: %v | Notes: %v", problem.Modified.Format("01/02/2006 @ 15:04:05"), problem.Notes)
 			}
 			fmt.Println()
 		}
