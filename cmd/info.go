@@ -22,10 +22,12 @@ var infoCmd = &cobra.Command{
 			return err
 		}
 		name, err := leetcode.GetQuestionNameByID(id)
+		level, err := leetcode.GetQuestionDifficultyByID(id)
 		if err != nil {
 			return err
 		}
 		fmt.Println(name)
+		fmt.Println(level)
 		return nil
 	},
 }
