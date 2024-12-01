@@ -25,7 +25,9 @@ var listCmd = &cobra.Command{
 		}
 
 		fmt.Println("Problems:")
-		for _, problem := range problemStore.Problems {
+		for _, key := range problemStore.GetProblemsSorted() {
+			problem := problemStore.Problems[key]
+
 			status := " "
 			if problem.Completed {
 				status = "✓"
@@ -36,6 +38,7 @@ var listCmd = &cobra.Command{
 			}
 			fmt.Println()
 		}
+
 		return nil
 	},
 }
