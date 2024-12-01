@@ -3,9 +3,11 @@ package store
 import (
 	"encoding/json"
 	"errors"
+	"maps"
 	"os"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -168,4 +170,9 @@ func (ps *ProblemStore) ShowNotes(number string) (string, error) {
 	}
 
 	return ps.Problems[id].Notes, nil
+}
+
+func (ps *ProblemStore) GetProblemsSorted() []int {
+	// Add different kinds of sorts
+	return slices.Sorted(maps.Keys(ps.Problems))
 }
