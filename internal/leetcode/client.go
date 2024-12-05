@@ -3,10 +3,38 @@ package leetcode
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
+	"os"
+	"path/filepath"
 )
 
-const leetcodeAPI = "https://leetcode.com/api/problems/all/"
+// TODO: maybe pass the path directory through arguments?
+func getFilePath() (string, error) {
+	root, err := getProjectRoot()
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Join(root, "data", "info.json"), nil
+}
+
+func getProjectRoot() (string, error) {
+	dir, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir, nil
+		}
+
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			return "", fmt.Errorf("go.mod not found")
+		}
+		dir = parent
+	}
+}
 
 // TODO: also get the difficulty (tags if possible as well)
 type Response struct {
@@ -22,14 +50,18 @@ type Response struct {
 }
 
 func fetchLeetCodeProblems() (*Response, error) {
-	resp, err := http.Get(leetcodeAPI)
+	dataFile, err := getFilePath()
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+
+	data, err := os.ReadFile(dataFile)
+	if err != nil {
+		return nil, err
+	}
 
 	var leetcodeData Response
-	if err := json.NewDecoder(resp.Body).Decode(&leetcodeData); err != nil {
+	if err := json.Unmarshal(data, &leetcodeData); err != nil {
 		return nil, err
 	}
 	return &leetcodeData, nil
