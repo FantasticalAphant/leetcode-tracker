@@ -67,12 +67,7 @@ func fetchLeetCodeProblems() (*Response, error) {
 	return &leetcodeData, nil
 }
 
-func GetQuestionNameByID(questionID int) (string, error) {
-	data, err := fetchLeetCodeProblems()
-	if err != nil {
-		return "", err
-	}
-
+func GetQuestionNameByID(questionID int, data *Response) (string, error) {
 	for _, pair := range data.StatStatusPairs {
 		if pair.Stat.QuestionID == questionID {
 			return pair.Stat.Title, nil
@@ -81,12 +76,7 @@ func GetQuestionNameByID(questionID int) (string, error) {
 	return "", fmt.Errorf("question with ID %d not found", questionID)
 }
 
-func GetQuestionDifficultyByID(questionID int) (string, error) {
-	data, err := fetchLeetCodeProblems()
-	if err != nil {
-		return "", err
-	}
-
+func GetQuestionDifficultyByID(questionID int, data *Response) (string, error) {
 	for _, pair := range data.StatStatusPairs {
 		if pair.Stat.QuestionID == questionID {
 			switch pair.Difficulty.Level {
@@ -102,4 +92,24 @@ func GetQuestionDifficultyByID(questionID int) (string, error) {
 		}
 	}
 	return "", fmt.Errorf("question with ID %d not found", questionID)
+}
+
+func GetQuestionInformation(questionID int) (map[string]string, error) {
+	data, err := fetchLeetCodeProblems()
+
+	if err != nil {
+		return nil, err
+	}
+
+	name, err := GetQuestionNameByID(questionID, data)
+	if err != nil {
+		return nil, err
+	}
+
+	difficulty, err := GetQuestionDifficultyByID(questionID, data)
+	if err != nil {
+		return nil, err
+	}
+
+	return map[string]string{"name": name, "difficulty": difficulty}, nil
 }

@@ -21,13 +21,14 @@ var infoCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		name, err := leetcode.GetQuestionNameByID(id)
-		level, err := leetcode.GetQuestionDifficultyByID(id)
+		info, err := leetcode.GetQuestionInformation(id)
+		name := info["name"]
+		difficulty := info["difficulty"]
 		if err != nil {
 			return err
 		}
 		fmt.Println(name)
-		fmt.Println(level)
+		fmt.Println(difficulty)
 		return nil
 	},
 }
