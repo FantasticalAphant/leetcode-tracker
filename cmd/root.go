@@ -2,13 +2,20 @@ package cmd
 
 import (
 	"fmt"
+	tea "github.com/charmbracelet/bubbletea"
+	tui2 "heatcold/internal/tui"
 	"os"
 
 	"github.com/spf13/cobra"
 	"heatcold/internal/store"
 )
 
+func init() {
+	rootCmd.Flags().BoolVar(&tui, "tui", false, "use tui")
+}
+
 var problemStore *store.ProblemStore
+var tui bool
 
 var rootCmd = &cobra.Command{
 	Use:   "yeetcode",
@@ -22,7 +29,14 @@ var rootCmd = &cobra.Command{
 		return problemStore.Load()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("You are calling this without any arguments")
+		if tui {
+			p := tea.NewProgram(tui2.InitialModel(), tea.WithAltScreen())
+			if _, err := p.Run(); err != nil {
+				os.Exit(1)
+			}
+		} else {
+			fmt.Println("You are calling this without any arguments")
+		}
 	},
 }
 
