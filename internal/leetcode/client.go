@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 // TODO: maybe pass the path directory through arguments?
@@ -112,4 +113,31 @@ func GetQuestionInformation(questionID int) (map[string]string, error) {
 	}
 
 	return map[string]string{"name": name, "difficulty": difficulty}, nil
+}
+
+func GetAllQuestionInformation() (map[string]string, error) {
+	data, err := fetchLeetCodeProblems()
+	info := make(map[string]string)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, pair := range data.StatStatusPairs {
+		id := pair.Stat.QuestionID
+		name, err := GetQuestionNameByID(id, data)
+		if err != nil {
+			return nil, err
+		}
+
+		difficulty, err := GetQuestionDifficultyByID(id, data)
+		if err != nil {
+			return nil, err
+		}
+
+		// Just prepend the question ID for easy referencing
+		info[strconv.Itoa(id)+") "+name] = difficulty
+	}
+
+	return info, nil
 }

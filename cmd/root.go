@@ -18,6 +18,7 @@ func init() {
 
 var problemStore *store.ProblemStore
 var tui bool
+var items []list.Item
 
 type item struct {
 	title, desc string
@@ -40,13 +41,24 @@ var rootCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if tui {
-			info, err := leetcode.GetQuestionInformation(1)
+			info, err := leetcode.GetAllQuestionInformation()
+
+			for name, difficulty := range info {
+				items = append(items, item{
+					title: name,
+					desc:  difficulty,
+				})
+			}
+
 			if err != nil {
 				fmt.Println("Invalid")
 				os.Exit(1)
 			}
-			m := tui2.Model{List: list.New([]list.Item{item{title: info["name"], desc: info["difficulty"]}}, list.NewDefaultDelegate(), 0, 0)}
+			m := tui2.Model{
+				List: list.New(items, list.NewDefaultDelegate(), 0, 0),
+			}
 			m.List.Title = "List of Questions"
+
 			p := tea.NewProgram(m, tea.WithAltScreen())
 			if _, err := p.Run(); err != nil {
 				os.Exit(1)
