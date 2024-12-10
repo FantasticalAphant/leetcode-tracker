@@ -1,0 +1,23 @@
+Merge Intervals
+In-Place Manipulation of a Linked List
+Two Heaps
+K-way merge
+Top K Elements
+Modified Binary Search
+Subsets
+Greedy Techniques
+Backtracking
+Dynamic Programming
+Cyclic Sort
+Topological Sort
+Matrices
+Stacks
+Graphs
+Tree Depth-First Search
+Tree Breadth-First Search
+Trie
+Hash Maps
+Knowing What to Track
+Union Find
+Custom Data Structures
+Bitwise Manipulation

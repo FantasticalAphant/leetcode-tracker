@@ -6,16 +6,18 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
-// TODO: maybe pass the path directory through arguments?
-func getFilePath() (string, error) {
+func getFilePath(path ...string) (string, error) {
 	root, err := getProjectRoot()
 	if err != nil {
 		return "", err
 	}
 
-	return filepath.Join(root, "data", "info.json"), nil
+	fullPath := []string{root}
+	fullPath = append(fullPath, path...)
+	return filepath.Join(fullPath...), nil
 }
 
 func getProjectRoot() (string, error) {
@@ -51,7 +53,7 @@ type Response struct {
 }
 
 func fetchLeetCodeProblems() (*Response, error) {
-	dataFile, err := getFilePath()
+	dataFile, err := getFilePath("data", "info.json")
 	if err != nil {
 		return nil, err
 	}
@@ -66,6 +68,26 @@ func fetchLeetCodeProblems() (*Response, error) {
 		return nil, err
 	}
 	return &leetcodeData, nil
+}
+
+func GetCodingPatterns() ([]string, error) {
+	dataFile, err := getFilePath("data", "patterns.txt")
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := os.ReadFile(dataFile)
+	if err != nil {
+		return nil, err
+	}
+
+	patterns := strings.Split(string(data), "\n")
+	var result []string
+	for _, pattern := range patterns {
+		result = append(result, pattern)
+	}
+
+	return result, nil
 }
 
 func GetQuestionNameByID(questionID int, data *Response) (string, error) {
