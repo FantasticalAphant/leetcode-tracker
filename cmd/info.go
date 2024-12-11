@@ -21,9 +21,9 @@ var infoCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		info, err := leetcode.GetQuestionInformation(id)
-		name := info["name"]
-		difficulty := info["difficulty"]
+		info, err := leetcode.GetQuestionRangeInformation(id)
+		name := info[id].Name
+		difficulty := info[id].Difficulty
 		if err != nil {
 			return err
 		}

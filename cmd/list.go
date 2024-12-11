@@ -2,16 +2,20 @@ package cmd
 
 import (
 	"fmt"
+	"heatcold/internal/leetcode"
 
 	"github.com/spf13/cobra"
 )
 
 func init() {
 	listCmd.Flags().BoolVarP(&long, "long", "l", false, "show more information")
+	listCmd.Flags().BoolVarP(&info, "info", "i", false, "show api information")
+	listCmd.MarkFlagsMutuallyExclusive("long", "info")
 	rootCmd.AddCommand(listCmd)
 }
 
 var long bool
+var info bool
 
 var listCmd = &cobra.Command{
 	Use:   "list",
@@ -25,6 +29,17 @@ var listCmd = &cobra.Command{
 		}
 
 		fmt.Println("Problems:")
+
+		var questionInfo map[int]leetcode.QuestionInformation
+
+		if info {
+			var err error
+			questionInfo, err = leetcode.GetQuestionRangeInformation(problemStore.GetProblemsSorted()...)
+			if err != nil {
+				return err
+			}
+		}
+
 		for _, key := range problemStore.GetProblemsSorted() {
 			problem := problemStore.Problems[key]
 
@@ -32,9 +47,12 @@ var listCmd = &cobra.Command{
 			if problem.Completed {
 				status = "✓"
 			}
-			fmt.Printf("[%s] %-4d", status, problem.ID)
+			fmt.Printf("[%s] %-5d", status, problem.ID)
+			if info {
+				fmt.Printf("| %s (%s)", questionInfo[problem.ID].Name, questionInfo[problem.ID].Difficulty)
+			}
 			if long {
-				fmt.Printf(" | Updated: %v | Notes: %v", problem.Modified.Format("01/02/2006 @ 15:04:05"), problem.Notes)
+				fmt.Printf("| Updated: %v | Notes: %v", problem.Modified.Format("01/02/2006 @ 15:04:05"), problem.Notes)
 			}
 			fmt.Println()
 		}

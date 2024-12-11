@@ -117,24 +117,39 @@ func GetQuestionDifficultyByID(questionID int, data *Response) (string, error) {
 	return "", fmt.Errorf("question with ID %d not found", questionID)
 }
 
-func GetQuestionInformation(questionID int) (map[string]string, error) {
+type QuestionInformation struct {
+	Name       string
+	Difficulty string
+}
+
+func GetQuestionRangeInformation(questionIDs ...int) (map[int]QuestionInformation, error) {
 	data, err := fetchLeetCodeProblems()
 
 	if err != nil {
 		return nil, err
 	}
 
-	name, err := GetQuestionNameByID(questionID, data)
-	if err != nil {
-		return nil, err
+	result := map[int]QuestionInformation{}
+
+	for _, questionID := range questionIDs {
+
+		name, err := GetQuestionNameByID(questionID, data)
+		if err != nil {
+			return nil, err
+		}
+
+		difficulty, err := GetQuestionDifficultyByID(questionID, data)
+		if err != nil {
+			return nil, err
+		}
+
+		result[questionID] = QuestionInformation{
+			Name:       name,
+			Difficulty: difficulty,
+		}
 	}
 
-	difficulty, err := GetQuestionDifficultyByID(questionID, data)
-	if err != nil {
-		return nil, err
-	}
-
-	return map[string]string{"name": name, "difficulty": difficulty}, nil
+	return result, nil
 }
 
 func GetAllQuestionInformation() (map[string]string, error) {
