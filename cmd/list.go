@@ -47,13 +47,21 @@ var listCmd = &cobra.Command{
 			if problem.Completed {
 				status = "✓"
 			}
+
 			fmt.Printf("[%s] %-5d", status, problem.ID)
+
+			if info || long {
+				fmt.Printf("{%v} ", problem.Modified.Format("01/02/06@15:04"))
+			}
+
 			if info {
-				fmt.Printf("| %s (%s)", questionInfo[problem.ID].Name, questionInfo[problem.ID].Difficulty)
+				fmt.Printf("| (%s) %s", questionInfo[problem.ID].Difficulty, questionInfo[problem.ID].Name)
 			}
+
 			if long {
-				fmt.Printf("| Updated: %v | Notes: %v", problem.Modified.Format("01/02/2006 @ 15:04:05"), problem.Notes)
+				fmt.Printf("| Notes: %v", problem.Notes)
 			}
+
 			fmt.Println()
 		}
 
