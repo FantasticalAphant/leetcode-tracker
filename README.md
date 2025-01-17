@@ -1,15 +1,18 @@
 # LeetCode Tracker
 
-## Current
-`heatcold list` - show all problems in the list
-
-`heatcold add <problem>` - add a new problem to the list
-
-`heatcold remove <problem>` - remove a problem from the list
-
-`heatcold update <problem>` - update completion status for a problem on the list
-
-`heatcold version` - get the current version
+## Current Commands
+### `heatcold list` - show all saved questions
+- `--long` or `-l`: show completion status, question number, date-time added, notes for the question
+- `--info` or `-i`: show completion status, question number, date-time added, question difficulty and name
+### `heatcold info <question>` - get information about a specific LeetCode question
+### `heatcold add <question #s...>` - add questions to the list
+- `--completed` or `-c`: mark newly added question as complete
+### `heatcold remove <question #s...>` - remove questions from the list
+### `heatcold update <question #>` - update completion status for a question on the list
+### `heatcold notes <question #>` - show personal notes for a question
+- `--add` or `-a`: add new notes for a question
+### `heatcold patterns` - show coding patterns
+### `heatcold version` - get the current version of the program
 
 ## WIP
-`heatcold info <problem>` - get information about a specific problem
+### `heatcold --tui`
