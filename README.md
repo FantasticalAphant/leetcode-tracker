@@ -1,5 +1,7 @@
 # LeetCode Tracker
 
+![Recording](https://github.com/FantasticalAphant/leetcode-tracker/blob/main/recording.gif?raw=true)
+
 ## Current Commands
 ### `list` - show all saved questions
 - `--long` or `-l`: show completion status, question number, date-time added, notes for the question
